@@ -10,6 +10,7 @@ import com.minelittlepony.client.transform.PonyTransformation;
 import com.minelittlepony.mson.util.PartUtil;
 
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.ModelTransform;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Vec3f;
@@ -63,9 +64,10 @@ public abstract class AbstractPonyModel<T extends LivingEntity> extends ClientPo
         PonyModelPrepareCallback.EVENT.invoker().onPonyModelPrepared(entity, this, ModelAttributes.Mode.OTHER);
         super.setAngles(entity, move, swing, ticks, headYaw, headPitch);
 
-        head.pivotY = head.getTransform().pivotY;
-        head.pivotX = head.getTransform().pivotX;
-        head.pivotZ = head.getTransform().pivotZ;
+        ModelTransform oldTransform = head.getTransform();
+        ModelTransform newTransform = ModelTransform.of(0.0f, 0.0f, 0.0f,
+                oldTransform.pitch, oldTransform.yaw, oldTransform.roll);
+        head.setTransform(newTransform);
 
         setModelAngles(entity, move, swing, ticks, headYaw, headPitch);
 
