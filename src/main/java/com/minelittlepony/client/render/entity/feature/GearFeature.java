@@ -5,7 +5,6 @@ import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.random.Random;
 
 import com.google.common.cache.*;
 import com.google.common.collect.Streams;
@@ -41,7 +40,7 @@ public class GearFeature<T extends LivingEntity, M extends EntityModel<T> & IPon
                 List<Entry> randomizedOrder = new ArrayList<>();
                 List<Entry> pool = new ArrayList<>(gears);
 
-                Random rng = Random.create(entity.getUuid().getLeastSignificantBits());
+                Random rng = new Random(entity.getUuid().getLeastSignificantBits());
 
                 while (!pool.isEmpty()) {
                     randomizedOrder.add(pool.remove(rng.nextInt(pool.size() + 1) % pool.size()));

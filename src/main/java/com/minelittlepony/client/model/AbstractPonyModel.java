@@ -63,9 +63,9 @@ public abstract class AbstractPonyModel<T extends LivingEntity> extends ClientPo
         PonyModelPrepareCallback.EVENT.invoker().onPonyModelPrepared(entity, this, ModelAttributes.Mode.OTHER);
         super.setAngles(entity, move, swing, ticks, headYaw, headPitch);
 
-        head.pivotY = head.getDefaultTransform().pivotY;
-        head.pivotX = head.getDefaultTransform().pivotX;
-        head.pivotZ = head.getDefaultTransform().pivotZ;
+        head.pivotY = head.getTransform().pivotY;
+        head.pivotX = head.getTransform().pivotX;
+        head.pivotZ = head.getTransform().pivotZ;
 
         setModelAngles(entity, move, swing, ticks, headYaw, headPitch);
 

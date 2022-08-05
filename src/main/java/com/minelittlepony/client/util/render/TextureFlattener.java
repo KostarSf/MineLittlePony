@@ -9,6 +9,7 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,19 +21,23 @@ public class TextureFlattener {
             @Override
             public void load(ResourceManager resManager) throws IOException {
 
-                NativeImage image = NativeImage.read(resManager.getResourceOrThrow(textures.get(0)).getInputStream());
+                try {
+                    NativeImage image = NativeImage.read(resManager.getResource(textures.get(0)).getInputStream());
 
-                for (int i = 1; i < textures.size(); i++) {
-                    try (NativeImage data = NativeImage.read(resManager.getResourceOrThrow(textures.get(i)).getInputStream())) {
-                        copyOver(data, image);
+                    for (int i = 1; i < textures.size(); i++) {
+                        try (NativeImage data = NativeImage.read(resManager.getResource(textures.get(i)).getInputStream())) {
+                            copyOver(data, image);
+                        }
                     }
-                }
 
-                if (!RenderSystem.isOnRenderThreadOrInit()) {
-                    final NativeImage i = image;
-                    RenderSystem.recordRenderCall(() -> upload(i));
-                } else {
-                    upload(image);
+                    if (!RenderSystem.isOnRenderThreadOrInit()) {
+                        final NativeImage i = image;
+                        RenderSystem.recordRenderCall(() -> upload(i));
+                    } else {
+                        upload(image);
+                    }
+                } catch (FileNotFoundException e) {
+
                 }
             }
 

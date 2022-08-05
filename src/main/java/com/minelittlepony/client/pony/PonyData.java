@@ -1,6 +1,7 @@
 package com.minelittlepony.client.pony;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
 import com.google.common.base.MoreObjects;
 import com.google.gson.annotations.Expose;
@@ -15,6 +16,7 @@ import com.minelittlepony.client.MineLittlePony;
 import com.minelittlepony.client.util.render.NativeUtil;
 import com.minelittlepony.common.util.animation.Interpolator;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -41,21 +43,24 @@ public class PonyData implements IPonyData {
             return MEM_NULL;
         }
 
-        return MinecraftClient.getInstance().getResourceManager().getResource(identifier).flatMap(res -> {
-            try {
-                return res.getMetadata().decode(SERIALISER);
-            } catch (IOException e) {
-                MineLittlePony.logger.warn("Unable to read {} metadata", identifier, e);
+        try (Resource res = MinecraftClient.getInstance().getResourceManager().getResource(identifier)) {
+            IPonyData data = res.getMetadata(SERIALISER);
+
+            if (data != null) {
+                return Memoize.of(data);
             }
-            return null;
-        }).map(Memoize::of).orElseGet(() -> {
-            return Memoize.load(callback -> {
-                NativeUtil.parseImage(identifier, img -> {
-                    callback.accept(new NativePonyData(img));
-                }, e -> {
-                    MineLittlePony.logger.fatal("Unable to read {} metadata", identifier, e);
-                    callback.accept(NULL);
-                });
+        } catch (FileNotFoundException e) {
+            // Ignore uploaded texture
+        } catch (IOException e) {
+            MineLittlePony.logger.warn("Unable to read {} metadata", identifier, e);
+        }
+
+        return Memoize.load(callback -> {
+            NativeUtil.parseImage(identifier, img -> {
+                callback.accept(new NativePonyData(img));
+            }, e -> {
+                MineLittlePony.logger.fatal("Unable to read {} metadata", identifier, e);
+                callback.accept(NULL);
             });
         });
     }

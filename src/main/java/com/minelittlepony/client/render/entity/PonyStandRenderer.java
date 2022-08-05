@@ -34,9 +34,9 @@ public class PonyStandRenderer extends ArmorStandEntityRenderer {
 
         features.clear();
         addFeature(new Armour(this, context));
-        addFeature(new HeldItemFeatureRenderer<>(this, context.getHeldItemRenderer()));
+        addFeature(new HeldItemFeatureRenderer<>(this));
         addFeature(new ElytraFeatureRenderer<>(this, context.getModelLoader()));
-        addFeature(new HeadFeatureRenderer<>(this, context.getModelLoader(), context.getHeldItemRenderer()));
+        addFeature(new HeadFeatureRenderer<>(this, context.getModelLoader()));
     }
 
     @Override

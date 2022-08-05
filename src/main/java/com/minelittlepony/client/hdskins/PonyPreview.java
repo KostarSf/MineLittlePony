@@ -2,6 +2,7 @@ package com.minelittlepony.client.hdskins;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -100,7 +101,7 @@ class PonyPreview extends PlayerPreview {
 
             List<Text> lines = value.getOptions().stream().map(option -> {
                 boolean selected = value.matches(option);
-                return Text.literal((selected ? "* " : "  ") + option.name()).styled(s -> {
+                return new LiteralText((selected ? "* " : "  ") + option.name()).styled(s -> {
                     int color = option.getChannelAdjustedColorCode();
                     return (color == 0 ? s : s.withColor(color)).withItalic(selected);
                 });
@@ -108,7 +109,7 @@ class PonyPreview extends PlayerPreview {
 
             lines.add(0, Text.of(key.toUpperCase() + ": " + value.getHexValue()));
             if (lines.size() == 1) {
-                lines.add(Text.literal(value.name()).styled(s -> {
+                lines.add(new LiteralText(value.name()).styled(s -> {
                     int color = value.getChannelAdjustedColorCode();
                     return color == 0 ? s : s.withColor(value.getColorCode());
                 }));

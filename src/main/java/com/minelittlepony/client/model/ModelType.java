@@ -47,7 +47,6 @@ public final class ModelType {
     public static final ModelKey<ParaspriteModel<VexEntity>> VEX = register("vex", ParaspriteModel::new);
     public static final ModelKey<SpikeModel<StriderEntity>> STRIDER = register("strider", SpikeModel::new);
     public static final ModelKey<SaddleModel<StriderEntity>> STRIDER_SADDLE = register("strider_saddle", SaddleModel::new);
-    public static final ModelKey<BreezieModel<AllayEntity>> ALLAY = register("allay", BreezieModel::new);
 
     public static final ModelKey<PonyElytra<?>> ELYTRA = register("elytra", PonyElytra::new);
 

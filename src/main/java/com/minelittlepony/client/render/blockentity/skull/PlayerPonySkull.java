@@ -17,8 +17,8 @@ import java.util.function.Supplier;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.DynamicSerializableUuid;
 import net.minecraft.util.math.Vec3f;
 
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class PlayerPonySkull implements ISkull {
                 return skin;
             }
 
-            return DefaultSkinHelper.getTexture(DynamicSerializableUuid.getUuidFromProfile(profile));
+            return DefaultSkinHelper.getTexture(PlayerEntity.getUuidFromProfile(profile));
         }
 
         return DefaultSkinHelper.getTexture();

@@ -40,7 +40,7 @@ class BackgroundPonyList {
 
     public void reloadAll(ResourceManager resourceManager) {
         backgroundPonyList.clear();
-        backgroundPonyList.addAll(resourceManager.findResources(id.getPath(), path -> path.getPath().endsWith(".png")).keySet());
+        backgroundPonyList.addAll(resourceManager.findResources("textures/entity/pony", path -> path.endsWith(".png")));
         MineLittlePony.logger.info("Detected {} ponies installed at {}.", backgroundPonyList.size(), id);
     }
 

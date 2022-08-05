@@ -2,6 +2,7 @@ package com.minelittlepony.client.render.entity.npc;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.VillagerData;
@@ -12,6 +13,8 @@ import net.minecraft.village.VillagerType;
 import com.minelittlepony.client.MineLittlePony;
 import com.minelittlepony.util.ResourceUtil;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -82,7 +85,9 @@ public class PonyTextures<T extends LivingEntity & VillagerDataContainer> implem
     }
 
     protected Optional<Identifier> verifyTexture(Identifier texture) {
-        if (resourceManager.getResource(texture).isEmpty()) {
+        try {
+            resourceManager.getResource(texture);
+        } catch (IOException e) {
             MineLittlePony.logger.warn("Villager texture `" + texture + "` was not found.");
             return Optional.empty();
         }
